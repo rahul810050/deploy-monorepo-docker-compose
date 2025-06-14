@@ -30,8 +30,8 @@ jobs:
           chmod 700 ssh_key
 
           # Optional: Clean up existing container
-          ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 "docker stop user_backend || true && docker rm user_backend || true"
+          ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 "sudo docker stop user_backend || true && sudo docker rm user_backend || true"
 
           # Run new container
           ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 \
-            "docker run --name user_backend -d -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}"
+            "sudo docker run --name user_backend -d -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}"
