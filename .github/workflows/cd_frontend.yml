@@ -33,4 +33,4 @@ jobs:
           chmod 700 ssh_key
           ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 "sudo docker stop user_frontend || true && sudo docker rm user_frontend || true"
           ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 \
-            "sudo docker run --name user_frontend -d -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}"
+            "sudo docker run --name user_frontend -d -p 3000:3000 ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}"
