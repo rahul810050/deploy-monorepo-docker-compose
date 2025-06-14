@@ -11,8 +11,6 @@ COPY ./apps/web/ ./apps/web/
 ARG DATABASE_URL
 ENV DATABASE_URL=${DATABASE_URL}
 
-RUN cd ./apps/web && bun install && cd ../..
-
 RUN bun install
 RUN bun run db:generate
 RUN bun run build
