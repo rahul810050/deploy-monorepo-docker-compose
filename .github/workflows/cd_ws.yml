@@ -1,0 +1,26 @@
+name: Deploy Backend
+
+on: 
+  push: 
+    branches: [ main ]
+
+jobs: 
+  build-and-push-docker-image:  # <- job ID
+    runs-on: ubuntu-latest       # <- properly indented
+    steps: 
+      - name: Checkout the code 
+        uses: actions/checkout@v2
+
+      - name: Docker login
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}  # fixed spacing
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./docker/Dockerfile.ws
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/websocket:${{ github.sha }}
