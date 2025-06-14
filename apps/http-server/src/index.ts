@@ -75,7 +75,6 @@ app.post("/api/v1/signin", async(req, res)=> {
 })
 
 
-
 app.post("/api/v1/todo", userMiddleware,async(req, res)=> {
   const {title, description, completed } = req.body;
   if(!title || !description || typeof completed !== "boolean") {
@@ -102,6 +101,18 @@ app.post("/api/v1/todo", userMiddleware,async(req, res)=> {
 })
 
 
+app.get("/api/v1/users", async(req, res)=> {
+  try{
+    const users = await prisma.user.findMany();
+    console.log(users);
+    res.status(200).json({users});
+  } catch(error) {
+    console.error(error);
+    res.status(500).json({error: "internal server error"}); 
+  }
+})
+
+
 app.get("/api/v1/todos", userMiddleware, async(req, res)=> {
   const user = req.userId;
   try{
@@ -119,6 +130,6 @@ app.get("/api/v1/todos", userMiddleware, async(req, res)=> {
 
 
 
-app.listen(3000, ()=> {
-  console.log("server is running on port 3000")
+app.listen(3001, ()=> {
+  console.log("server is running on port 3001")
 })

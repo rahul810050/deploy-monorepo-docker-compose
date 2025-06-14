@@ -1,7 +1,7 @@
 import { WebSocketServer } from "ws";
 import prisma from "@repo/db/client";
 
-const wss = new WebSocketServer({port: 3001});
+const wss = new WebSocketServer({port: 3002});
 
 wss.on("connection", (sokcet)=> {
   console.log("new connection");
