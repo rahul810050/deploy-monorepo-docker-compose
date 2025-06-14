@@ -27,7 +27,7 @@ jobs:
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
       - name: Deploy to the VM
-        run:
+        run: |
           echo "${{ secrets.MY_SSH_TODO }}" > ~/ssh_key
           mkdir -p /home/ubuntu/.ssh
           chmod 700 /home/ubuntu/.ssh

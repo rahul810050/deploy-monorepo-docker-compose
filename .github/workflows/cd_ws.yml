@@ -25,7 +25,7 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/websocket:${{ github.sha }}
       - name: Deploy to the VM
-        run:
+        run: |
           echo "${{ secrets.MY_SSH_TODO }}" > ~/ssh_key
           mkdir -p /home/ubuntu/.ssh
           chmod 700 /home/ubuntu/.ssh
