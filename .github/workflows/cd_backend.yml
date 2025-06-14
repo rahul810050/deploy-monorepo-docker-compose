@@ -25,13 +25,13 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}
       - name: Deploy to Remote Server
-          run: |
-            echo "${{ secrets.MY_SSH_TODO }}" > ssh_key
-            chmod 600 ssh_key
+        run: |
+          echo "${{ secrets.MY_SSH_TODO }}" > ssh_key
+          chmod 600 ssh_key
 
-            # Optional: Clean up existing container
-            ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 "docker stop user_backend || true && docker rm user_backend || true"
+          # Optional: Clean up existing container
+          ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 "docker stop user_backend || true && docker rm user_backend || true"
 
-            # Run new container
-            ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 \
-              "docker run --name user_backend -d -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}"
+          # Run new container
+          ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 \
+            "docker run --name user_backend -d -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/backend:${{ github.sha }}"
