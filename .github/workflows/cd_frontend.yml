@@ -26,9 +26,11 @@ jobs:
           tags: ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}
           build-args: |
             DATABASE_URL=${{ secrets.DATABASE_URL }}
-      - name: Deploy to the VM
-        run: |
-          echo "${{ secrets.MY_SSH_TODO }}" > ~/ssh_key
-          mkdir -p /home/ubuntu/.ssh
-          chmod 700 /home/ubuntu/.ssh
-          ssh -o StrictHostKeyChecking=no -i ~/ssh_key cocane@34.93.115.4 -t "docker stop user_frontend && docker run --name user_frontend -d -p 3001:3001 cocane/frontend:${{ github.sha }}"
+      - name: Deploy to Remote Server
+          run: |
+            echo "${{ secrets.MY_SSH_TODO }}" > ssh_key
+            chmod 600 ssh_key
+            ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 "docker stop user_frontend || true && docker rm user_frontend || true"
+
+            ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 \
+              "docker run --name user_frontend -d -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/frontend:${{ github.sha }}"

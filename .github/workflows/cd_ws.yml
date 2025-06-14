@@ -24,9 +24,11 @@ jobs:
           file: ./docker/Dockerfile.ws
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/websocket:${{ github.sha }}
-      - name: Deploy to the VM
-        run: |
-          echo "${{ secrets.MY_SSH_TODO }}" > ~/ssh_key
-          mkdir -p /home/ubuntu/.ssh
-          chmod 700 /home/ubuntu/.ssh
-          ssh -o StrictHostKeyChecking=no -i ~/ssh_key cocane@34.93.115.4 -t "docker stop user_websocket && docker run --name user_websocket -d -p 3001:3001 cocane/websocket:${{ github.sha }}"
+      - name: Deploy to Remote Server
+          run: |
+            echo "${{ secrets.MY_SSH_TODO }}" > ssh_key
+            chmod 600 ssh_key
+            ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 "docker stop user_websocket || true && docker rm user_websocket || true"
+
+            ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 \
+              "docker run --name user_websocket -d -p 3001:3001 ${{ secrets.DOCKER_USERNAME }}/websocket:${{ github.sha }}"
