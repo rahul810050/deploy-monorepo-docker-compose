@@ -27,7 +27,7 @@ jobs:
       - name: Deploy to Remote Server
         run: |
           echo "${{ secrets.MY_SSH_TODO }}" > ssh_key
-          chmod 600 ssh_key
+          chmod 700 ssh_key
 
           # Optional: Clean up existing container
           ssh -o StrictHostKeyChecking=no -i ssh_key cocane@34.93.115.4 "docker stop user_backend || true && docker rm user_backend || true"
